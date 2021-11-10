@@ -1,0 +1,34 @@
+{
+  "name": "coffee-listing-app",
+  "version": "0.1.0",
+  "bin": {
+    "coffee-listing-app": "bin/coffee-listing-app.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.84",
+    "@types/jest": "27.0.2",
+    "@types/node": "16.11.6",
+    "aws-cdk": "1.129.0",
+    "aws-sdk": "2.1016.0",
+    "esbuild": "0.13.10",
+    "jest": "27.3.1",
+    "ts-jest": "27.0.7",
+    "ts-node": "10.4.0",
+    "typescript": "4.4.4"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-apigateway": "1.129.0",
+    "@aws-cdk/aws-cloudfront": "1.129.0",
+    "@aws-cdk/aws-cloudfront-origins": "1.129.0",
+    "@aws-cdk/aws-lambda-nodejs": "1.129.0",
+    "@aws-cdk/aws-s3": "1.129.0",
+    "@aws-cdk/core": "1.129.0",
+    "source-map-support": "0.5.20"
+  }
+}
