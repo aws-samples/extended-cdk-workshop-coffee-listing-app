@@ -1,8 +1,9 @@
-import * as cdk from "@aws-cdk/core";
-import * as apigateway from "@aws-cdk/aws-apigateway";
-import * as lambdaNodeJs from "@aws-cdk/aws-lambda-nodejs";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as cloudfront from "@aws-cdk/aws-cloudfront";
+import { Construct } from "constructs";
+import * as cdk from "aws-cdk-lib";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as lambdaNodeJs from "aws-cdk-lib/aws-lambda-nodejs";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 
 interface RestApiStackProps extends cdk.StackProps {
   bucket: s3.Bucket;
@@ -14,7 +15,7 @@ export class RestApiStack extends cdk.Stack {
   public readonly cfnOutApiImagesUrl: cdk.CfnOutput;
   public readonly cfnOutApiLikesUrl: cdk.CfnOutput;
 
-  constructor(scope: cdk.Construct, id: string, props: RestApiStackProps) {
+  constructor(scope: Construct, id: string, props: RestApiStackProps) {
     super(scope, id, props);
 
     let lambdaApiHandlerPublic = new lambdaNodeJs.NodejsFunction(this, "ApiHandlerPublic", {
