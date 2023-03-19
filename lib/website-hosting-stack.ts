@@ -1,7 +1,8 @@
-import * as cdk from "@aws-cdk/core";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as cloudfront from "@aws-cdk/aws-cloudfront";
-import * as cloudfrontOrigins from "@aws-cdk/aws-cloudfront-origins";
+import { Construct } from "constructs";
+import * as cdk from "aws-cdk-lib";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
+import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 
 export class WebsiteHostingStack extends cdk.Stack {
   public readonly bucket: s3.Bucket;
@@ -10,7 +11,7 @@ export class WebsiteHostingStack extends cdk.Stack {
   public readonly cfnOutBucketName: cdk.CfnOutput;
   public readonly cfnOutDistributionId: cdk.CfnOutput;
 
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     let bucket = new s3.Bucket(this, "Bucket", {
@@ -21,7 +22,7 @@ export class WebsiteHostingStack extends cdk.Stack {
         },
       ],
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
+      autoDeleteObjects: true
     });
 
     let distribution = new cloudfront.Distribution(this, "Distribution", {
@@ -37,8 +38,7 @@ export class WebsiteHostingStack extends cdk.Stack {
           origin: new cloudfrontOrigins.S3Origin(bucket, {
             originPath: "/",
           }),
-          viewerProtocolPolicy:
-            cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+          viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         },
       },
     });
@@ -50,14 +50,10 @@ export class WebsiteHostingStack extends cdk.Stack {
       value: `https://${distribution.distributionDomainName}`,
       description: "URL for CLOUDFRONT_URL in `frontend/.env` file",
     });
-    this.cfnOutDistributionId = new cdk.CfnOutput(
-      this,
-      "CfnOutDistributionId",
-      {
-        value: distribution.distributionId,
-        description: "CloudFront Distribution Id",
-      }
-    );
+    this.cfnOutDistributionId = new cdk.CfnOutput(this, "CfnOutDistributionId", {
+      value: distribution.distributionId,
+      description: "CloudFront Distribution Id",
+    });
     this.cfnOutBucketName = new cdk.CfnOutput(this, "CfnOutBucketName", {
       value: bucket.bucketName,
       description: "Website Hosting Bucket Name",
