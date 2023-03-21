@@ -15,7 +15,7 @@ export class WebsiteHostingStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Suppressing AwsSolutions-S1.
+    // Adding suppressions at the stack level.
     NagSuppressions.addStackSuppressions(this, [
       { id: 'AwsSolutions-S1', reason: 'S3 bucket only used for static-web-hosting' }
     ]);
@@ -33,7 +33,7 @@ export class WebsiteHostingStack extends cdk.Stack {
       autoDeleteObjects: true
     });
 
-    // Suppressing AwsSolutions-S2.
+    // Adding suppressions at the resource level.
     NagSuppressions.addResourceSuppressions(bucket, [
       { id: 'AwsSolutions-S2', reason: 'S3 bucket only used for static-web-hosting, hence enabling public access' }
     ]);
