@@ -1,6 +1,7 @@
 import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
+import { NagSuppressions } from "cdk-nag";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 
@@ -14,7 +15,17 @@ export class WebsiteHostingStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    // Suppressing AwsSolutions-S1.
+    NagSuppressions.addStackSuppressions(this, [
+      {
+        id: 'AwsSolutions-S1',
+        reason: 'S3 bucket only used for static-web-hosting'
+      },
+    ]);
+
+    // Remediating AwsSolutions-S10 by enforcing SSL on the bucket.
     let bucket = new s3.Bucket(this, "Bucket", {
+      enforceSSL: true,
       cors: [
         {
           allowedMethods: [s3.HttpMethods.POST],
@@ -24,6 +35,46 @@ export class WebsiteHostingStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     });
+
+    // Suppressing AwsSolutions-S2.
+    NagSuppressions.addResourceSuppressions(bucket, [
+      {
+        id: 'AwsSolutions-S2',
+        reason: 'S3 bucket only used for static-web-hosting, hence enabling public access'
+      },
+    ]);
+
+    // Suppressing AwsSolutions-CFR1.
+    NagSuppressions.addStackSuppressions(this, [
+      {
+        id: 'AwsSolutions-CFR1',
+        reason: 'CloudFront distribution for web-hosting, hence no Geo restrictions'
+      },
+    ]);
+
+    // Suppressing AwsSolutions-CFR2.
+    NagSuppressions.addStackSuppressions(this, [
+      {
+        id: 'AwsSolutions-CFR2',
+        reason: 'CloudFront distribution for web-hosting, hence not adding AWS WAF'
+      },
+    ]);
+
+    // Suppressing AwsSolutions-CFR3.
+    NagSuppressions.addStackSuppressions(this, [
+      {
+        id: 'AwsSolutions-CFR3',
+        reason: 'CloudFront distribution for web-hosting, hence not enabling access logging'
+      },
+    ]);
+
+    // Suppressing AwsSolutions-CFR4.
+    NagSuppressions.addStackSuppressions(this, [
+      {
+        id: 'AwsSolutions-CFR4',
+        reason: 'CloudFront distribution for web-hosting, allowing for SSLv3 or TLSv1 for HTTPS viewer connections'
+      },
+    ]);
 
     let distribution = new cloudfront.Distribution(this, "Distribution", {
       defaultRootObject: "index.html",
@@ -42,7 +93,6 @@ export class WebsiteHostingStack extends cdk.Stack {
         },
       },
     });
-
     this.bucket = bucket;
     this.distribution = distribution;
 
