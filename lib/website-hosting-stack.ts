@@ -17,7 +17,7 @@ export class WebsiteHostingStack extends cdk.Stack {
 
     // Suppressing AwsSolutions-S1.
     NagSuppressions.addStackSuppressions(this, [
-      { id: 'AwsSolutions-S1', reason: 'S3 bucket only used for static-web-hosting' },
+      { id: 'AwsSolutions-S1', reason: 'S3 bucket only used for static-web-hosting' }
     ]);
 
     // Remediating AwsSolutions-S10 by enforcing SSL on the bucket.
@@ -35,7 +35,7 @@ export class WebsiteHostingStack extends cdk.Stack {
 
     // Suppressing AwsSolutions-S2.
     NagSuppressions.addResourceSuppressions(bucket, [
-      { id: 'AwsSolutions-S2', reason: 'S3 bucket only used for static-web-hosting, hence enabling public access' },
+      { id: 'AwsSolutions-S2', reason: 'S3 bucket only used for static-web-hosting, hence enabling public access' }
     ]);
 
     let distribution = new cloudfront.Distribution(this, "Distribution", {
@@ -63,7 +63,7 @@ export class WebsiteHostingStack extends cdk.Stack {
       { id: 'AwsSolutions-CFR1', reason: 'CloudFront distribution for web-hosting, hence no Geo restrictions' },
       { id: 'AwsSolutions-CFR2', reason: 'CloudFront distribution for web-hosting, hence not adding AWS WAF' },
       { id: 'AwsSolutions-CFR3', reason: 'CloudFront distribution for web-hosting, hence not enabling access logging' },
-      { id: 'AwsSolutions-CFR4', reason: 'CloudFront distribution for web-hosting, allowing for SSLv3 or TLSv1 for HTTPS viewer connections' },
+      { id: 'AwsSolutions-CFR4', reason: 'CloudFront distribution for web-hosting, allowing for SSLv3 or TLSv1 for HTTPS viewer connections' }
     ]);
 
     this.cfnOutCloudFrontUrl = new cdk.CfnOutput(this, "CfnOutCloudFrontUrl", {
