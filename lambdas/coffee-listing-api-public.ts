@@ -1,6 +1,6 @@
-import { APIGatewayProxyEvent, APIGatewayProxyStructuredResultV2 } from "aws-lambda";
 import * as AWS from "aws-sdk";
 import * as crypto from "crypto";
+import { APIGatewayProxyEvent, APIGatewayProxyStructuredResultV2 } from "aws-lambda";
 
 let response: APIGatewayProxyStructuredResultV2 = {
   headers: {
