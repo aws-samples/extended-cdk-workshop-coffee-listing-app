@@ -1,7 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as s3 from "aws-cdk-lib/aws-s3";
-import { NagSuppressions } from "cdk-nag";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 
@@ -15,11 +14,6 @@ export class WebsiteHostingStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Adding suppressions at the stack level.
-    NagSuppressions.addStackSuppressions(this, [
-      { id: 'AwsSolutions-S1', reason: 'S3 bucket only used for static-web-hosting' }
-    ]);
-
     // Remediating AwsSolutions-S10 by enforcing SSL on the bucket.
     let bucket = new s3.Bucket(this, "Bucket", {
       enforceSSL: true,
@@ -32,11 +26,6 @@ export class WebsiteHostingStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     });
-
-    // Adding suppressions at the resource level.
-    NagSuppressions.addResourceSuppressions(bucket, [
-      { id: 'AwsSolutions-S2', reason: 'S3 bucket only used for static-web-hosting, hence enabling public access' }
-    ]);
 
     let distribution = new cloudfront.Distribution(this, "Distribution", {
       defaultRootObject: "index.html",
@@ -57,14 +46,6 @@ export class WebsiteHostingStack extends cdk.Stack {
     });
     this.bucket = bucket;
     this.distribution = distribution;
-
-    // Adding suppressions at the resource level.
-    NagSuppressions.addResourceSuppressions(distribution, [
-      { id: 'AwsSolutions-CFR1', reason: 'CloudFront distribution for web-hosting, hence no Geo restrictions' },
-      { id: 'AwsSolutions-CFR2', reason: 'CloudFront distribution for web-hosting, hence not adding AWS WAF' },
-      { id: 'AwsSolutions-CFR3', reason: 'CloudFront distribution for web-hosting, hence not enabling access logging' },
-      { id: 'AwsSolutions-CFR4', reason: 'CloudFront distribution for web-hosting, allowing for SSLv3 or TLSv1 for HTTPS viewer connections' }
-    ]);
 
     this.cfnOutCloudFrontUrl = new cdk.CfnOutput(this, "CfnOutCloudFrontUrl", {
       value: `https://${distribution.distributionDomainName}`,
