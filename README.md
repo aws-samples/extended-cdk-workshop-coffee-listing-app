@@ -28,6 +28,10 @@ By the end of this workshop, our application will have:
 
 In the last part of the workshop, we will export the final infrastructure from TypeScript to different languages, upload the artifact to CodeArtifact and, using Python, install our application package and use it to build a new Python based AWS CDK Stack.
 
+# USAGE DISCLAIMER
+
+Code in this repo. is not production ready, it contains code only used for demo app for AWS Extended CDK workshop.
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
