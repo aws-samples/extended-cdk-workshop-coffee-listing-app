@@ -16,7 +16,7 @@
     "@types/node": "18.11.18",
     "@types/prettier": "2.1.0",
     "aws-cdk": "2.65.0",
-    "aws-sdk": "2.1315.0",
+    "aws-sdk": "2.1354.0",
     "esbuild": "0.17.8",
     "jest": "26.4.2",
     "ts-jest": "26.5.3",
