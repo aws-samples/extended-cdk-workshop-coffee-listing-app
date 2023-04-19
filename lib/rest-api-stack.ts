@@ -1,9 +1,9 @@
-import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib";
-import * as apigateway from "aws-cdk-lib/aws-apigateway";
-import * as lambdaNodeJs from "aws-cdk-lib/aws-lambda-nodejs";
+import { Construct } from "constructs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as lambdaNodeJs from "aws-cdk-lib/aws-lambda-nodejs";
 
 interface RestApiStackProps extends cdk.StackProps {
   bucket: s3.Bucket;

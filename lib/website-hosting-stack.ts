@@ -1,5 +1,5 @@
-import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
@@ -14,7 +14,9 @@ export class WebsiteHostingStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    // Remediating AwsSolutions-S10 by enforcing SSL on the bucket.
     let bucket = new s3.Bucket(this, "Bucket", {
+      enforceSSL: true,
       cors: [
         {
           allowedMethods: [s3.HttpMethods.POST],
@@ -42,7 +44,6 @@ export class WebsiteHostingStack extends cdk.Stack {
         },
       },
     });
-
     this.bucket = bucket;
     this.distribution = distribution;
 
