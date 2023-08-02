@@ -15,7 +15,9 @@ export class CoffeeListingAppStack extends cdk.Stack {
       description: "Code Repository for Coffee Listing",
     });
 
-    let appStage = new AppStage(this, "AppStage", { stackName: this.stackName });
+    let appStage = new AppStage(this, "AppStage", {
+      stackName: this.stackName,
+    });
 
     let pipeline = new pipelines.CodePipeline(this, "Pipeline", {
       pipelineName: `Pipeline-${this.stackName}`,
@@ -23,6 +25,7 @@ export class CoffeeListingAppStack extends cdk.Stack {
       publishAssetsInParallel: false,
       synth: new pipelines.ShellStep("Synth", {
         input: pipelines.CodePipelineSource.codeCommit(repository, "main"),
+        installCommands: ["npm i -g npm@latest"],
         commands: ["npm ci", "npm run build", "npx cdk synth"],
       }),
       codeBuildDefaults: {
